@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_str_url = "http://192.168.1.106:8090";
 
     m_timerPlay = new QTimer;
-    m_timerPlay->setInterval(7);
+    m_timerPlay->setInterval(1);
     connect(m_timerPlay,SIGNAL(timeout()),this,SLOT(playSlots()));
     connect(this,SIGNAL(GetImage(const QImage )),this,SLOT(SetImageSlots(const QImage )));
 
@@ -123,6 +123,7 @@ void MainWindow::playSlots()
                 sws_scale(pSwsContext,(const uint8_t* const *)pAVFrame->data,pAVFrame->linesize,0,videoHeight,pAVPicture.data,pAVPicture.linesize);
                 //发送获取一帧图像信号
                 QImage image(pAVPicture.data[0],videoWidth,videoHeight,QImage::Format_RGB888);
+                m_timerPlay->stop();
                 emit GetImage(image);
                 mutex.unlock();
             }
@@ -153,6 +154,7 @@ void MainWindow::SetImageSlots(const QImage &image)
 }
 
 void MainWindow::detectAndDisplay(const QImage &image){
+#if 0
     std::vector<Rect> faces;
     Mat face_gray;
      cv::Mat face = QImage2cvMat(image);
@@ -168,8 +170,13 @@ void MainWindow::detectAndDisplay(const QImage &image){
     }
 
     QImage image1 = cvMat2QImage(face);
-    QPixmap pix = QPixmap::fromImage(image1.scaled(640,360));
+    QPixmap pix = QPixmap::fromImage(image1.scaled(image1.width(),image1.height()));
     ui->Lab_VideoOut->setPixmap(pix);
+#else
+    QPixmap pix = QPixmap::fromImage(image.scaled(image.width(),image.height()));
+    ui->Lab_VideoOut->setPixmap(pix);
+    m_timerPlay->start();
+#endif
 }
 
 
@@ -240,4 +247,3 @@ cv::Mat MainWindow::QImage2cvMat(QImage image)
     }
     return mat;
 }
-
