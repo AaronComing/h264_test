@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.3.1
+** Created by: Qt User Interface Compiler version 5.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -70,10 +70,10 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", Q_NULLPTR));
         Lab_VideoOut->setText(QString());
-        Btn_Start->setText(QApplication::translate("MainWindow", "start", 0));
-        Btn_Stop->setText(QApplication::translate("MainWindow", "stop", 0));
+        Btn_Start->setText(QApplication::translate("MainWindow", "start", Q_NULLPTR));
+        Btn_Stop->setText(QApplication::translate("MainWindow", "stop", Q_NULLPTR));
     } // retranslateUi
 
 };

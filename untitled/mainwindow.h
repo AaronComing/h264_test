@@ -4,6 +4,8 @@
 #define INT64_C
 #define UINT64_C
 #endif
+
+#define ENABLE_OPENCV 0
 #include <QMainWindow>
 #include <QVideoEncoderSettings>
 #include <QMutex>
@@ -12,11 +14,12 @@
 #include <QDateTime>
 #include <QFileDialog>
 
+#if ENABLE_OPENCV
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/objdetect/objdetect.hpp"
-
+#endif
 
 extern "C"
 {
@@ -50,9 +53,11 @@ private:
 
     void detectAndDisplay( const QImage &image );
 
+#if ENABLE_OPENCV
     QImage cvMat2QImage(const cv::Mat& mat);
     cv::Mat QImage2cvMat(QImage image);
-
+    cv::Mat image;  // the image variable
+#endif
 
     QMutex mutex;
     AVPicture  pAVPicture;
@@ -68,7 +73,7 @@ private:
     int m_i_frameFinished;
     int videoHeight,videoWidth;
 
-    cv::Mat image;  // the image variable
+
 
 public slots:
     void SetImageSlots(const QImage &image);

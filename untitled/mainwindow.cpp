@@ -1,18 +1,20 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include"string"
+//#include"string"
 
+#if ENABLE_OPENCV
 using namespace cv;
 string face_cascade_name = "haarcascade_frontalface_alt2.xml";
 //该文件存在于OpenCV安装目录下的\sources\data\haarcascades内，需要将该xml文件复制到当前工程目录下
 cv::CascadeClassifier face_cascade;
+#endif
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    m_str_url = "http://192.168.1.106:8090";
+    m_str_url = "udp://@:8080";
 
     m_timerPlay = new QTimer;
     m_timerPlay->setInterval(1);
@@ -53,23 +55,26 @@ void MainWindow::stopStream()
 
 bool MainWindow::Init()
 {
+#if ENABLE_OPENCV
     if( !face_cascade.load( face_cascade_name) ){
         qDebug()<<"级联分类器错误，可能未找到文件，拷贝该文件到工程目录下！";
         return false;
     }
+#endif
+
     if(m_str_url.isEmpty())
         return false;
     //打开视频流
     int result=avformat_open_input(&pAVFormatContext, m_str_url.toStdString().c_str(),NULL,NULL);
     if (result<0){
-        qDebug()<<"打开视频流失败";
+        qDebug()<<"Failed to open video stream";
         return false;
     }
 
     //获取视频流信息
     result=avformat_find_stream_info(pAVFormatContext,NULL);
     if (result<0){
-        qDebug()<<"获取视频流信息失败";
+        qDebug()<<"Failed to get video stream information";
         return false;
     }
 
@@ -83,7 +88,7 @@ bool MainWindow::Init()
     }
 
     if (videoStreamIndex==-1){
-        qDebug()<<"获取视频流索引失败";
+        qDebug()<<"Failed to get video stream index";
         return false;
     }
 
@@ -103,11 +108,11 @@ bool MainWindow::Init()
     //打开对应解码器
     result=avcodec_open2(pAVCodecContext,pAVCodec,NULL);
     if (result<0){
-        qDebug()<<"打开解码器失败";
+        qDebug()<<"failed to open decoder";
         return false;
     }
 
-    qDebug()<<"初始化视频流成功";
+    qDebug()<<"config video stream sccussfully";
     return true;
 }
 
@@ -116,7 +121,7 @@ void MainWindow::playSlots()
     //一帧一帧读取视频
     if (av_read_frame(pAVFormatContext, &pAVPacket) >= 0){
         if(pAVPacket.stream_index==videoStreamIndex){
-            qDebug()<<"开始解码"<<QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
+            qDebug()<<"start to decode"<<QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
             avcodec_decode_video2(pAVCodecContext, pAVFrame, &m_i_frameFinished, &pAVPacket);
             if (m_i_frameFinished){
                 mutex.lock();
@@ -154,7 +159,7 @@ void MainWindow::SetImageSlots(const QImage &image)
 }
 
 void MainWindow::detectAndDisplay(const QImage &image){
-#if 0
+#if ENABLE_OPENCV
     std::vector<Rect> faces;
     Mat face_gray;
      cv::Mat face = QImage2cvMat(image);
@@ -179,7 +184,7 @@ void MainWindow::detectAndDisplay(const QImage &image){
 #endif
 }
 
-
+#if ENABLE_OPENCV
 QImage MainWindow::cvMat2QImage(const cv::Mat& mat)
 {
     // 8-bits unsigned, NO. OF CHANNELS = 1
@@ -247,3 +252,4 @@ cv::Mat MainWindow::QImage2cvMat(QImage image)
     }
     return mat;
 }
+#endif

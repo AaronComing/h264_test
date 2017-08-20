@@ -21,22 +21,22 @@ HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
 
-INCLUDEPATH += E:\ffmpeg\include
-LIBS += -LE:\ffmpeg\lib \
+INCLUDEPATH += D:\myLib\ffmpeg-3.3.3-win64-dev\include
+LIBS += -LD:\myLib\ffmpeg-3.3.3-win64-dev\lib \
         -lavcodec \
         -lavfilter \
         -lavformat \
         -lswscale \
         -lavutil
 
-INCLUDEPATH += E:\opencv\opencv_249\build\include \
-                E:\opencv\opencv_249\build\include\opencv \
-                E:\opencv\opencv_249\build\include\opencv2
+#INCLUDEPATH += E:\opencv\opencv_249\build\include \
+#                E:\opencv\opencv_249\build\include\opencv \
+#                E:\opencv\opencv_249\build\include\opencv2
 
-LIBS += E:\opencv\opencv_249\build\x64\mingw\lib\libopencv_core249d.dll.a \
-        E:\opencv\opencv_249\build\x64\mingw\lib\libopencv_highgui249d.dll.a \
-        E:\opencv\opencv_249\build\x64\mingw\lib\libopencv_imgproc249d.dll.a \
-        E:\opencv\opencv_249\build\x64\mingw\lib\libopencv_features2d249d.dll.a \
-        E:\opencv\opencv_249\build\x64\mingw\lib\libopencv_calib3d249d.dll.a \
-        E:\opencv\opencv_249\build\x64\mingw\lib\libopencv_objdetect249d.dll.a \
-        E:\opencv\opencv_249\build\x64\mingw\lib\libopencv_imgproc249d.dll.a
+#LIBS += E:\opencv\opencv_249\build\x64\mingw\lib\libopencv_core249d.dll.a \
+#        E:\opencv\opencv_249\build\x64\mingw\lib\libopencv_highgui249d.dll.a \
+#        E:\opencv\opencv_249\build\x64\mingw\lib\libopencv_imgproc249d.dll.a \
+#        E:\opencv\opencv_249\build\x64\mingw\lib\libopencv_features2d249d.dll.a \
+#        E:\opencv\opencv_249\build\x64\mingw\lib\libopencv_calib3d249d.dll.a \
+#        E:\opencv\opencv_249\build\x64\mingw\lib\libopencv_objdetect249d.dll.a \
+#        E:\opencv\opencv_249\build\x64\mingw\lib\libopencv_imgproc249d.dll.a
