@@ -1,0 +1,4 @@
+./untitled/Makefile*
+./untitled/.qmake.stash
+/untitled/debug
+./untitled/release/*.obj
